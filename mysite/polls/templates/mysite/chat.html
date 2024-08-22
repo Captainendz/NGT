@@ -1,0 +1,62 @@
+{% load static %}
+
+<!-- templates/myapp/index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nugt</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <h1>Welcome to NGT Bot</h1>
+    <div id="questionDiv"></div>
+    <div id="answerDiv"></div>
+    </div>
+    <form id="questionForm">
+        <input type="text" name="questionInput" placeholder="Enter your question">
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // Get the button element by its ID
+        var form = document.getElementById('questionForm');
+        var questionDiv = document.getElementById('questionDiv');
+        var answerDiv = document.getElementById('answerDiv');
+
+
+        // Add a click event listener to the button
+        form.addEventListener('submit', async function (event) {
+            // Prevent the default action (form submission)
+            event.preventDefault();
+            var question = event.target.questionInput.value;
+
+            //Get the answer from server
+            var apiUrl = `http://127.0.0.1:8000/nugt/answer/?question=${question}`
+
+            fetch(apiUrl)
+                .then(response => {
+                    // Check if the response is successful (status 200-299)
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Parse the JSON in the response
+                    return response.json();
+                })
+                .then(data => {
+                    // You can assign the data to a variable or process it further
+                    questionDiv.innerText = "Question: " + question;
+                    answerDiv.innerText = "Answer: " + data.answer;
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error('Fetch error:', error);
+                    questionDiv.innerText = "Question: " + question;
+                    answerDiv.innerText = "Answer: " + "Cannot answer question at the moment";
+                });
+        });
+    </script>
+</body>
+
+</html>
