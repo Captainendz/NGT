@@ -1,0 +1,8 @@
+BeautifulSoup==3.2.0
+Django==1.3
+langchain==0.0.155
+qdrant-client==1.1.5
+langchain_community==0.0.4
+PyYAML==3.09
+amqplib==0.6.1
+anyjson==0.3
